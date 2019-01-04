@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node main.js"
   },
   "repository": {
     "type": "git",
@@ -15,5 +15,12 @@
   "bugs": {
     "url": "https://github.com/rmill/hue-lights-server/issues"
   },
-  "homepage": "https://github.com/rmill/hue-lights-server#readme"
+  "homepage": "https://github.com/rmill/hue-lights-server#readme",
+  "dependencies": {
+    "bluebird": "^3.5.3",
+    "body-parser": "^1.18.3",
+    "express": "^4.16.4",
+    "request": "^2.88.0",
+    "request-promise": "^4.2.2"
+  }
 }

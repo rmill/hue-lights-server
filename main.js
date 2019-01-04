@@ -3,45 +3,21 @@
 // Third party modules
 const bodyParser = require('body-parser')
 const express = require('express')
-// Custom modules
-const actions = require('./js/actions')
-const discover = require('./js/discover')
-const { playScene } = require('./js/scene')
-const { createConfig, getConfig, saveConfig } = require('./js/config')
 
-var config = getConfig()
+// Custom modules
+const actions = require('./lib/actions')
+const state = require('./lib/state')
+const { playScene } = require('./lib/scene')
+
+// Initialize the light state
+state.initialize()
+
 const app = express()
 
 app.use(bodyParser.json())
-app.use(express.static('assets'))
 
-app.get('/', (req, res) => {
-  res.sendFile(__dirname + '/index.html')
-})
-
-app.get('/config', (req, res) => {
-  if (!config) {
-    return res.sendStatus(404)
-  }
-
-  res.json(config)
-})
-
-app.post('/configure', (req, res) => {
-  discover().then((lights) => {
-    config = createConfig(lights)
-    saveConfig(config)
-    res.json(config)
-  }).catch((err) => {
-    console.log(err)
-    res.sendStatus(500)
-  });
-})
-
-app.put('/config/groups', (req, res) => {
-  config.groups = req.body
-  saveConfig(config)
-  res.send(config)
+app.get('/lights', (req, res) => {
+  res.json(state.state.lights)
 })
 
 app.post('/scene', (req, res) => {

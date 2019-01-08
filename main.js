@@ -1,7 +1,6 @@
 "use strict"
 
 // Third party modules
-const bodyParser = require('body-parser')
 const express = require('express')
 
 // Custom modules
@@ -14,10 +13,22 @@ state.initialize()
 
 const app = express()
 
-app.use(bodyParser.json())
+app.use(require('cors')())
+app.use(require('body-parser').json())
 
 app.get('/lights', (req, res) => {
   res.json(state.state.lights)
+})
+
+app.get('/lights/:id', (req, res) => {
+  var light = state.getLight(req.params.id)
+  res.json(light)
+})
+
+app.put('/lights/:id', (req, res) => {
+  state.updateLight(req.params.id, req.body)
+    .then(light => res.json(light))
+    .catch(e => { throw(e) })
 })
 
 app.post('/scene', (req, res) => {

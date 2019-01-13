@@ -21,7 +21,7 @@ app.get('/effects', (req, res) => {
 })
 
 app.get('/lights', (req, res) => {
-  res.json(state.state.lights)
+  res.json(state.getLights())
 })
 
 app.get('/lights/:id', (req, res) => {

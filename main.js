@@ -16,6 +16,10 @@ const app = express()
 app.use(require('cors')())
 app.use(require('body-parser').json())
 
+app.get('/effects', (req, res) => {
+  res.json(actions.getEffects())
+})
+
 app.get('/lights', (req, res) => {
   res.json(state.state.lights)
 })

@@ -16,18 +16,11 @@ const app = express()
 app.use(require('cors')())
 app.use(require('body-parser').json())
 
-app.get('/effects', (req, res) => {
-  res.json(actions.getEffects())
-})
+app.get('/effects', (req, res) => res.json(actions.getEffects()))
 
-app.get('/lights', (req, res) => {
-  res.json(state.getLights())
-})
+app.get('/lights', (req, res) => res.json(state.getLights()))
 
-app.get('/lights/:id', (req, res) => {
-  var light = state.getLight(req.params.id)
-  res.json(light)
-})
+app.get('/lights/:id', (req, res) => res.json(state.getLight(req.params.id)))
 
 app.put('/lights/:id', (req, res) => {
   state.updateLight(req.params.id, req.body)
@@ -35,9 +28,16 @@ app.put('/lights/:id', (req, res) => {
     .catch(e => { throw(e) })
 })
 
+app.post('/lights/:id/effect', (req, res) => {
+  let lightId = req.params.id
+  let scene = { 0: { actions: [ { name: req.body.name, options: { lights: [ lightId ]}}]}}
+  playScene(scene)
+  res.json(state.getLight(lightId))
+})
+
 app.post('/scene', (req, res) => {
   playScene(req.body)
-  res.end()
+  res.json(state.getLights())
 })
 
 app.listen(3000, () => {
